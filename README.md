@@ -2,9 +2,9 @@
 
 **GPT-6.2 Astra · Raimundo Olmos Rodríguez**
 
-**AI use and contributions.** GPT-6.2 Astra, used through OpenAI Codex, generated the construction, mathematical argument, Lean code, literature search, and manuscripts in Spanish and English. Raimundo Olmos Rodríguez posed the research question, requested verification and revisions, and shared the materials. Lean checked the supplied formal statements. Independent expert review and confirmation of priority remain open.
+**AI use and contributions.** GPT-6.2 Astra, used through OpenAI Codex, generated the construction, mathematical argument, Lean code, literature search, and manuscripts in Spanish and English. I posed the research question, requested verification and revisions, and shared the materials. Lean checked the supplied formal statements. Independent expert review and confirmation of priority remain open.
 
-**Uso de IA y contribuciones.** GPT-6.2 Astra, utilizado mediante Codex de OpenAI, generó la construcción, el argumento matemático, el código Lean, la búsqueda bibliográfica y los manuscritos en español e inglés. Raimundo Olmos Rodríguez planteó la pregunta de investigación, solicitó verificaciones y revisiones y compartió el material. Lean comprobó los enunciados formalizados. La revisión independiente y la confirmación de prioridad siguen pendientes.
+**Uso de IA y contribuciones.** GPT-6.2 Astra, utilizado mediante Codex de OpenAI, generó la construcción, el argumento matemático, el código Lean, la búsqueda bibliográfica y los manuscritos en español e inglés. Yo  planteé la pregunta, solicité verificaciones y revisiones y compartí el material. Lean comprobó los enunciados formalizados. La revisión independiente y la confirmación de prioridad siguen pendientes.
 
 ## Result and review status
 
