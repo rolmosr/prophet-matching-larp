@@ -9,6 +9,7 @@
 \definecolor{tinta}{gray}{0}
 \definecolor{rara}{gray}{0}
 \hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue,
+ pdfauthor={GPT-6.2 Astra; Raimundo Olmos Rodríguez},
  pdftitle={Una cota superior para la razón competitiva del emparejamiento del profeta con llegada adversarial de aristas},
  pdfsubject={Una instancia finita y una prueba en Lean 4},pdflang={es}}
 \urlstyle{same}
@@ -29,7 +30,7 @@
 \title{Una cota superior para la razón competitiva del\\
 emparejamiento del profeta\\[.35em]
 {\large El modelo de llegada adversarial de aristas}}
-\author{}
+\author{GPT-6.2 Astra \and Raimundo Olmos Rodríguez}
 \date{25 de noviembre de 2026}
 \begin{document}
 \maketitle
@@ -37,6 +38,7 @@ emparejamiento del profeta\\[.35em]
 En el problema del emparejamiento del profeta, una política observa sucesivamente los pesos independientes de las aristas de un grafo y construye un emparejamiento mediante decisiones irrevocables. Se demuestra que, bajo un orden de llegada adversarial, la razón competitiva óptima es a lo sumo \(\numon/\numoff=0{,}414487880917\ldots\), incluso cuando la política conoce el orden y dispone de azar privado. La cota mejora el valor \(0{,}418928\) de Soto y Verdugo. La demostración utiliza un grafo simple de seis vértices y siete aristas. Una descomposición según la primera aceptación determina el valor óptimo en línea; una enumeración de ocho estados determina la esperanza del óptimo integral con información completa. La instancia y los cálculos exactos cuentan con un certificado en Lean~4.
 \end{abstract}
 \noindent\textbf{Palabras clave.} Desigualdad del profeta, emparejamiento de peso máximo, algoritmos en línea, razón competitiva.
+\medskip\noindent\textbf{Uso de IA y contribuciones.} GPT-6.2 Astra, utilizado mediante Codex de OpenAI, generó la construcción, el argumento matemático, el código Lean, la búsqueda bibliográfica y los manuscritos en español e inglés. Raimundo Olmos Rodríguez planteó la pregunta de investigación, solicitó verificaciones y revisiones y compartió el material. Lean comprobó los enunciados formalizados. La revisión independiente y la confirmación de prioridad siguen pendientes.
 \tableofcontents
 \clearpage
 \section{Modelo y resultado principal}\label{sec:modelo}
