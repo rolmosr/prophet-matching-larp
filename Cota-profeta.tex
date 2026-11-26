@@ -1,0 +1,219 @@
+% !TeX program = xelatex
+% Compilar: tectonic Cota-profeta.tex
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{lmodern,amsmath,amssymb,booktabs,array,geometry,tikz}
+\usepackage{hyperref}
+\geometry{margin=25mm}
+\definecolor{tinta}{gray}{0}
+\definecolor{rara}{gray}{0}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue,
+ pdftitle={Una cota superior para la razón competitiva del emparejamiento del profeta con llegada adversarial de aristas},
+ pdfsubject={Una instancia finita y una prueba en Lean 4},pdflang={es}}
+\urlstyle{same}
+\setlength{\parindent}{17pt}
+\setlength{\parskip}{0pt plus 1pt}
+\setlength{\emergencystretch}{1.5em}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\OPT}{\mathrm{OPT}}
+\newcommand{\numon}{25\,600\,000\,000}
+\newcommand{\numoff}{61\,762\,963\,837}
+\newcommand{\masa}{320\,000\,000}
+\renewcommand{\refname}{Referencias}
+\newtheorem{teorema}{Teorema}
+\newtheorem{lema}{Lema}
+\newenvironment{prueba}[1][Demostración]{\par\smallskip\noindent\textit{#1.}\enspace}{\unskip\nobreak\hfill\(\square\)\par\smallskip}
+\newcommand{\ON}{\mathrm{ON}}
+\newcommand{\F}{\mathcal F}
+\title{Una cota superior para la razón competitiva del\\
+emparejamiento del profeta\\[.35em]
+{\large El modelo de llegada adversarial de aristas}}
+\author{}
+\date{25 de noviembre de 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+En el problema del emparejamiento del profeta, una política observa sucesivamente los pesos independientes de las aristas de un grafo y construye un emparejamiento mediante decisiones irrevocables. Se demuestra que, bajo un orden de llegada adversarial, la razón competitiva óptima es a lo sumo \(\numon/\numoff=0{,}414487880917\ldots\), incluso cuando la política conoce el orden y dispone de azar privado. La cota mejora el valor \(0{,}418928\) de Soto y Verdugo. La demostración utiliza un grafo simple de seis vértices y siete aristas. Una descomposición según la primera aceptación determina el valor óptimo en línea; una enumeración de ocho estados determina la esperanza del óptimo integral con información completa. La instancia y los cálculos exactos cuentan con un certificado en Lean~4.
+\end{abstract}
+\noindent\textbf{Palabras clave.} Desigualdad del profeta, emparejamiento de peso máximo, algoritmos en línea, razón competitiva.
+\tableofcontents
+\clearpage
+\section{Modelo y resultado principal}\label{sec:modelo}
+Una instancia \(I\) consta de un grafo simple finito \(G=(V,E)\), de una enumeración \(e_1,\ldots,e_m\) de sus aristas y de variables aleatorias independientes \(W_1,\ldots,W_m\), no negativas e integrables. El orden se fija antes de realizar los pesos. Denotamos por \(\mathcal M(G)\) la familia de subconjuntos de \(E\) cuyas aristas son disjuntas dos a dos en sus extremos. El valor del profeta es la variable aleatoria
+\[
+  \OPT(I)=\max_{M\in\mathcal M(G)}\sum_{i:\,e_i\in M} W_i .
+\]
+
+Concedemos a la política el conocimiento previo del grafo, del orden y de las distribuciones. Sea \(U\) su semilla privada, independiente del vector de pesos, y sea \(\F_i=\sigma(U,W_1,\ldots,W_i)\) la información disponible al llegar \(e_i\). Una política admisible \(\pi\) elige, en cada etapa \(i\), un indicador de aceptación \(A_i\in\{0,1\}\) medible respecto de \(\F_i\). Se exige que \(\{e_i:A_i=1\}\in\mathcal M(G)\) casi seguramente. Su recompensa y el valor óptimo en línea de la instancia son, respectivamente,
+\[
+ R_\pi(I)=\sum_{i=1}^m A_iW_i,\qquad
+ \ON(I)=\sup_{\pi\text{ admisible}}\E[R_\pi(I)].
+\]
+Para las instancias con \(\E[\OPT(I)]>0\), el mejor factor uniforme bajo esta información viene dado por \(c^\star=\inf_I \ON(I)/\E[\OPT(I)]\). Toda política a la que se oculte el orden pertenece a una clase más restringida y satisface la misma cota superior.
+
+\begin{teorema}\label{thm:main}
+Existe una instancia \(I_0\) sobre seis vértices y siete aristas tal que
+\[
+ \ON(I_0)=80,\qquad \E[\OPT(I_0)]=\frac{\numoff}{\masa}.
+\]
+En particular, \(c^\star\leq \numon/\numoff<0{,}41449\).
+\end{teorema}
+
+\section{Construcción de la instancia}\label{sec:inst}
+Sea \(V=\{0,1,2,3,4,5\}\). Para \(1\leq i\leq 7\), sean \(B_i\) variables de Bernoulli independientes de parámetros \(p_i\) y defínase \(W_i=w_iB_i\). La tabla especifica el orden, los extremos y el par \((w_i,p_i)\) de cada arista.
+
+\smallskip
+\noindent\begin{minipage}[c]{.49\linewidth}\centering\small
+\begin{tabular}{@{}cccc@{}}\toprule
+\(i\)& Extremos & \(w_i\) & \(p_i\)\\\midrule
+1 & \(\{1,4\}\)&35&1\\
+2 & \(\{0,3\}\)&44&1\\
+3 & \(\{0,2\}\)&33&1\\
+4 & \(\{0,5\}\)&60&\(3/4\)\\
+5 & \(\{1,5\}\)&80&\(9/20\)\\
+6 & \(\{1,3\}\)&80&\(1/4\)\\
+7 & \(\{0,1\}\)&\(80\,000\,000\)&\(10^{-6}\)\\\bottomrule
+\end{tabular}
+\end{minipage}\hfill
+\begin{minipage}[c]{.47\linewidth}\centering
+\begin{tikzpicture}[x=.95cm,y=.9cm,vertex/.style={draw=tinta,circle,fill=white,
+minimum size=6mm,inner sep=0pt,font=\small}]
+\coordinate (p0) at (-1.12,0); \coordinate (p1) at (1.12,0);
+\coordinate (p2) at (-2.4,0); \coordinate (p4) at (2.4,0);
+\coordinate (p3) at (0,1.05); \coordinate (p5) at (0,-1.05);
+\draw[tinta] (p2)--(p0)--(p3)--(p1)--(p4) (p0)--(p5)--(p1);
+\draw[rara,very thick] (p0)--(p1);
+\foreach \i in {2,3,4,5}{\node[vertex] at (p\i) {\i};}
+\foreach \i in {0,1}{\node[vertex,fill=tinta,text=white] at (p\i) {\i};}
+\end{tikzpicture}
+
+\small El conjunto \(\{0,1\}\) es una cubierta de vértices. Cada \(e_i\) con \(i<7\) incide en exactamente uno de sus elementos.
+\end{minipage}
+
+
+
+\clearpage
+\section{Valor óptimo de una política adaptada}
+\begin{lema}\label{lem:on}
+Para la instancia \(I_0\) de la sección~\ref{sec:inst}, se tiene \(\ON(I_0)=80\).
+\end{lema}
+\begin{prueba}
+La política que rechaza \(e_1,\ldots,e_6\) y acepta \(e_7\) cuando \(B_7=1\) tiene recompensa esperada \(\E[W_7]=80\). Para la desigualdad opuesta, fijemos una política admisible \(\pi\). Sin pérdida de generalidad, rechaza las aristas de peso cero. En efecto, se puede simular internamente su historial de aceptaciones y ejecutar solo las de peso positivo. El emparejamiento efectivo es un subconjunto del simulado y la recompensa coincide en cada realización.
+
+Defínase \(T=\min\{i\leq6:A_i=1\}\), con \(T=\infty\) si el conjunto es vacío. Para \(i\leq6\), el suceso \(\{T=i\}\) pertenece a \(\F_i\), pues solo requiere conocer las decisiones hasta la etapa \(i\). En particular, es independiente de \((W_{i+1},\ldots,W_7)\). En \(\{T=i\}\) el primer pago es \(w_i\), la arista \(e_7\) queda bloqueada y todas las aristas futuras compatibles con \(e_i\) comparten el otro vértice de la cubierta \(\{0,1\}\). Se puede elegir a lo sumo una de ellas.
+
+Sea \(J_i\) la lista ordenada de índices posteriores compatibles con \(e_i\). Para cualquier lista de ese tipo, el máximo pago esperado de una sola elección satisface
+\[
+ v(\varnothing)=0,\qquad
+ v(j,J)=\E[\max\{W_j,v(J)\}].
+\]
+En efecto, una vez observado \(W_j\), aceptar produce \(W_j\) y rechazar deja el valor \(v(J)\) por independencia. Por inducción hacia atrás la recurrencia da un máximo alcanzable. Las observaciones de aristas ya bloqueadas y la semilla privada no modifican esos valores de continuación. La evaluación para los seis posibles índices iniciales es
+\begin{center}
+\begin{tabular}{@{}cclcl@{}}\toprule
+\(i\)& \(J_i\)&Cálculo de \(v(J_i)\)& \(w_i\)& \(w_i+v(J_i)\)\\\midrule
+1 & \((2,3,4)\)& \(\max\{44,33,60(3/4)\}=45\)&35&80\\
+2 & \((5)\)& \(80(9/20)=36\)&44&80\\
+3 & \((5,6)\)& \(80(9/20)+20(11/20)=47\)&33&80\\
+4 & \((6)\)& \(80(1/4)=20\)&60&80\\
+5, 6 & \(\varnothing\)& \(0\)&80&80\\\bottomrule
+\end{tabular}
+\end{center}
+Por tanto, \(\E[R_\pi(I_0)\mathbf 1_{\{T=i\}}]\leq80\,\Pr(T=i)\) para cada \(i\leq6\). Sobre \(\{T=\infty\}\) la recompensa está acotada por \(W_7\). Como \(\{T=\infty\}\in\F_6\), la independencia de \(W_7\) implica
+\[
+ \E[R_\pi(I_0)\mathbf 1_{\{T=\infty\}}]\leq
+ \E[W_7]\Pr(T=\infty)=80\Pr(T=\infty).
+\]
+Sumar sobre esta partición da \(\E[R_\pi(I_0)]\leq80\). La filtración incluye desde el inicio la semilla privada, de modo que la demostración abarca también las políticas aleatorias.
+\end{prueba}
+
+\clearpage
+\section{Óptimo con información completa y prueba del teorema}
+\begin{lema}\label{lem:off}
+En la instancia \(I_0\), \(\E[\OPT(I_0)]=\numoff/\masa\).
+\end{lema}
+\begin{prueba}
+Si \(B_7=1\), el profeta toma \(e_7\). Todo emparejamiento que la omita contiene a lo sumo dos aristas, por la cubierta \(\{0,1\}\), y pesa a lo sumo \(160\). Supongamos ahora que \(B_7=0\) y escribamos \((a,b,c)=(B_4,B_5,B_6)\). Las aristas disponibles en el vértice 0 son \(e_2,e_3,e_4\) y las disponibles en el vértice 1 son \(e_1,e_5,e_6\). Entre ambos grupos solo son incompatibles las parejas \((e_2,e_6)\) y \((e_4,e_5)\). Todo emparejamiento de una sola arista de estos grupos se puede completar con otra del grupo opuesto. Como los pesos son no negativos, el óptimo se obtiene maximizando sobre las parejas compatibles:
+\[
+ H(a,b,c)=\max\left\{
+ \begin{aligned}
+ &44+\max\{35,80b\},\\
+ &33+\max\{35,80b,80c\},\\
+ &60a+\max\{35,80c\}
+ \end{aligned}\right\}.
+\]
+Sea \(q_{abc}=\Pr((B_4,B_5,B_6)=(a,b,c)\mid B_7=0)\). Por independencia, \(q_{abc}\) es el producto de las tres probabilidades de Bernoulli correspondientes.
+\begin{center}\renewcommand{\arraystretch}{1.14}
+\begin{tabular}{@{}ccc@{\qquad}ccc@{}}\toprule
+\(a\)&\(b\)&\(c\)&\(q_{abc}\)& Pareja óptima & \(H(a,b,c)\)\\\midrule
+0&0&0&\(33/320\)&\(e_1,e_2\)&79\\
+0&0&1&\(11/320\)&\(e_3,e_6\)&113\\
+0&1&0&\(27/320\)&\(e_2,e_5\)&124\\
+0&1&1&\(9/320\)&\(e_2,e_5\)&124\\
+1&0&0&\(99/320\)&\(e_1,e_4\)&95\\
+1&0&1&\(33/320\)&\(e_4,e_6\)&140\\
+1&1&0&\(81/320\)&\(e_2,e_5\)&124\\
+1&1&1&\(27/320\)&\(e_4,e_6\)&140\\\bottomrule
+\end{tabular}\end{center}
+
+
+Sumando las ocho contribuciones resulta
+\(\sum_{a,b,c}q_{abc}H(a,b,c)=36\,163/320\). Por la fórmula de la esperanza total,
+\[
+ \E[\OPT(I_0)]
+   =10^{-6}(80\,000\,000)+(1-10^{-6})\,\frac{36\,163}{320}
+   =\frac{\numoff}{\masa}.
+\]
+\end{prueba}
+
+\begin{prueba}[Demostración del teorema~\ref{thm:main}]
+La construcción de la sección~\ref{sec:inst} satisface las hipótesis del modelo. Los lemas~\ref{lem:on} y~\ref{lem:off} prueban las dos identidades. Al evaluar el ínfimo que define \(c^\star\) en la instancia \(I_0\) se obtiene
+\[
+ c^\star\leq\frac{\ON(I_0)}{\E[\OPT(I_0)]}
+ =\frac{80\cdot\masa}{\numoff}
+ =\frac{\numon}{\numoff}<\frac{41\,449}{100\,000}.
+\]
+La última comparación se verifica por multiplicación cruzada de enteros positivos.
+\end{prueba}
+
+\clearpage
+\section{Certificado en Lean 4}
+La formalización multiplica cada esperanza por \(\masa\) para trabajar con enteros. El lema \texttt{policy\_le} prueba por inducción que la recurrencia de Bellman domina el pago de toda política que decide a partir del historial. Para el profeta, se enumera primero cada realización y se maximiza después sobre sus emparejamientos factibles.
+
+{\raggedright Los lemas \texttt{witness\_online} y \texttt{witness\_offline} certifican los enteros \(\numon\) y \(\numoff\). El teorema \texttt{universal\_upper} acota las garantías racionales. El lema \texttt{private\_coins\_upper} formaliza el promedio sobre la semilla. La formalización importa únicamente \texttt{Std} y se comprueba con \texttt{lean ProphetMatchingWitness.lean}.\par}
+
+
+\section{Antecedentes y alcance de la revisión}
+Ezra et al.~\cite{ezra} distinguen la llegada de vértices de la de aristas. Para vértices prueban el factor óptimo \(1/2\). Para aristas obtienen una garantía de \(0{,}337\) en grafos generales, elevada después a \(0{,}344\) por MacRury, Ma y Grammel~\cite{mmg}. El teorema~\ref{thm:main} y esa garantía delimitan el intervalo
+\[
+ 0{,}344 \;\leq\; c^\star \;\leq\; \frac{\numon}{\numoff}.
+\]
+
+Soto y Verdugo~\cite[teorema~1(b)]{sv} prueban la cota superior \(0{,}418928\) para el mismo cociente frente al óptimo integral. Su instancia también reserva para el final una arista muy valiosa y poco probable. Cambiar las aristas anteriores, su orden y sus distribuciones permite obtener aquí una razón estrictamente menor con una probabilidad final fija.
+
+El valor \(4/11\) de su teorema~1(a) corresponde a subastas en las que un agente puede valorar varias aristas. Por otra parte, la cota \(0{,}390\) de Ma, MacRury y Nuti~\cite{mmn} limita la \emph{selectabilidad} de los esquemas de resolución de contención en línea (OCRS), una exigencia por arista. Esta imposibilidad no da, por sí sola, una cota superior para todas las políticas frente a \(\E[\OPT]\). MacRury, Nuti y Vondrák~\cite{mnv} estudian una clase más amplia, los \emph{matchoids}, y un óptimo fraccionario \emph{ex ante}.
+
+\paragraph{Revisión bibliográfica (25 de noviembre de 2026).}
+Se buscaron el título y los identificadores de \cite{sv} y combinaciones de \emph{prophet matching}, \emph{edge arrivals}, \emph{upper bound} y \emph{adversarial order}. \href{https://openalex.org/W4409264837}{OpenAlex} agrupaba el preprint y el artículo publicado en un registro con cero citas indexadas. Se revisaron además los títulos que citan \cite{ezra} o \cite{mmg} desde el 16 de octubre de 2024 (26 y 6 registros, respectivamente, con posibles solapamientos), y los trabajos pertinentes. La menor cota superior publicada localizada para el modelo de la sección~\ref{sec:modelo} fue \(0{,}418928\). La cobertura de los índices limita cualquier afirmación de prioridad.
+
+\begingroup\small
+\phantomsection\addcontentsline{toc}{section}{Referencias}
+\begin{thebibliography}{5}\setlength{\itemsep}{2pt}
+\bibitem{ezra} T. Ezra, M. Feldman, N. Gravin y Z. G. Tang.
+\href{https://doi.org/10.1287/moor.2021.1152}{Prophet Matching with General Arrivals}.
+\emph{Mathematics of Operations Research} 47 (2022), 878--898.
+\bibitem{sv} J. A. Soto y V. Verdugo.
+\href{https://doi.org/10.1016/j.orl.2025.107294}{Prophet upper bounds for online matching and auctions}.
+\emph{Operations Research Letters} 61 (2025), 107294. \href{https://arxiv.org/html/2410.12756v1#S3}{Demostración del teorema~1}.
+\bibitem{mmg} C. MacRury, W. Ma y N. Grammel.
+\href{https://doi.org/10.1137/1.9781611977554.ch76}{On (Random-order) Online Contention Resolution Schemes for the Matching Polytope of (Bipartite) Graphs}.
+\emph{SODA} (2023).
+\bibitem{mmn} W. Ma, C. MacRury y P. Nuti.
+\href{https://arxiv.org/abs/2406.14506v3}{Online Matching and Contention Resolution for Edge Arrivals with Vanishing Probabilities}.
+arXiv:2406.14506v3 (2026).
+\bibitem{mnv} C. MacRury, P. Nuti y J. Vondrák.
+\href{https://arxiv.org/abs/2609.20939}{Prophet Inequalities and Online Contention Resolution for Matchoids}.
+arXiv:2609.20939 (2026).
+\end{thebibliography}
+\endgroup
+\end{document}
